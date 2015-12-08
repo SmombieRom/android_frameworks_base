@@ -149,6 +149,10 @@ public class QuickStatusBarHeader extends BaseStatusBarHeader implements
         updateResources();
     }
 
+	public void setTaskManagerEnabled(boolean enabled) {
+	return;	/*Do nothing here*/
+	}
+
     private void updateResources() {
         FontSizeUtils.updateFontSize(mAlarmStatus, R.dimen.qs_date_collapsed_size);
         FontSizeUtils.updateFontSize(mEmergencyOnly, R.dimen.qs_emergency_calls_only_text_size);

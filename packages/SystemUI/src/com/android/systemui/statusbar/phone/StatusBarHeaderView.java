@@ -101,7 +101,6 @@ public class StatusBarHeaderView extends BaseStatusBarHeader implements View.OnC
     private View mSignalCluster;
     private SettingsButton mSettingsButton;
     private View mSettingsContainer;
-    private View mTaskManagerButton;
     private View mQsDetailHeader;
     private TextView mQsDetailHeaderTitle;
     private Switch mQsDetailHeaderSwitch;
@@ -165,6 +164,11 @@ public class StatusBarHeaderView extends BaseStatusBarHeader implements View.OnC
     public StatusBarHeaderView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
+    public StatusBarHeaderView(Context context) {
+        super(context);
+    }
+
 
     @Override
     protected void onFinishInflate() {
@@ -371,7 +375,7 @@ public class StatusBarHeaderView extends BaseStatusBarHeader implements View.OnC
         requestCaptureValues();
     }
 
-    void setTaskManagerEnabled(boolean enabled) {
+   public void setTaskManagerEnabled(boolean enabled) {
         mShowTaskManager = enabled;
         updateVisibilities();
         updateSystemIconsLayoutParams();

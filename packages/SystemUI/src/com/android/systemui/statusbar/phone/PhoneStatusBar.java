@@ -93,6 +93,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
+import android.view.View.OnClickListener;
 import android.view.ThreadedRenderer;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -112,6 +113,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.LinearLayout;
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.logging.MetricsProto.MetricsEvent;
 import com.android.internal.statusbar.NotificationVisibility;
@@ -165,6 +167,7 @@ import com.android.systemui.statusbar.ScrimView;
 import com.android.systemui.statusbar.SignalClusterView;
 import com.android.systemui.statusbar.StatusBarState;
 import com.android.systemui.statusbar.phone.UnlockMethodCache.OnUnlockMethodChangedListener;
+import com.android.systemui.statusbar.phone.StatusBarHeaderView;
 import com.android.systemui.statusbar.policy.AccessibilityController;
 import com.android.systemui.statusbar.policy.BatteryController;
 import com.android.systemui.statusbar.policy.BatteryController.BatteryStateChangeCallback;
@@ -193,6 +196,7 @@ import com.android.systemui.statusbar.stack.NotificationStackScrollLayout.OnChil
 import com.android.systemui.statusbar.stack.StackStateAnimator;
 import com.android.systemui.statusbar.stack.StackViewState;
 import com.android.systemui.volume.VolumeComponent;
+
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -373,11 +377,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private TaskManager mTaskManager;
     private LinearLayout mTaskManagerPanel;
     private ImageButton mTaskManagerButton;
+	private StatusBarHeaderView mHeaderView;
     // task manager enabled
     private boolean mShowTaskManager;
     // task manager click state
     private boolean mShowTaskList = false;
-
     // top bar
     BaseStatusBarHeader mHeader;
     protected KeyguardStatusBarView mKeyguardStatusBar;
@@ -547,7 +551,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 	  
 	    	boolean mShow3G = Settings.System.getIntForUser(resolver,
 					Settings.System.SHOW_THREEG, 0, UserHandle.USER_CURRENT) == 1;
-            mShowTaskManager = Settings.System.getIntForUser(resolver,
 
 			boolean showTaskManager = Settings.System.getIntForUser(resolver,
                     Settings.System.ENABLE_TASK_MANAGER, 0, UserHandle.USER_CURRENT) == 1;
@@ -557,9 +560,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     mShowTaskList = false;
                 }
                 mShowTaskManager = showTaskManager;
-                if (mHeader != null) {
-                    mHeader.setTaskManagerEnabled(showTaskManager);
-                }
+				if (mHeaderView!= null) {
+                mHeaderView.setTaskManagerEnabled(showTaskManager);
+				}
                 if (mNotificationPanel != null) {
                     mNotificationPanel.setTaskManagerEnabled(showTaskManager);
                 }
@@ -1053,6 +1056,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         mStatusBarView.setScrimController(mScrimController);
         mDozeScrimController = new DozeScrimController(mScrimController, context);
 
+		mHeaderView = new StatusBarHeaderView(mContext);
+		
         mKeyguardStatusBar = (KeyguardStatusBarView) mStatusBarWindow.findViewById(R.id.keyguard_header);
         mKeyguardStatusView = mStatusBarWindow.findViewById(R.id.keyguard_status_view);
         mKeyguardBottomArea =
@@ -1183,10 +1188,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
         // Task manager
         mTaskManagerPanel =
-                (LinearLayout) mStatusBarWindowContent.findViewById(R.id.task_manager_panel);
+                (LinearLayout) mStatusBarWindow.findViewById(R.id.task_manager_panel);
         mTaskManager = new TaskManager(mContext, mTaskManagerPanel);
         mTaskManager.setActivityStarter(this);
-        mTaskManagerButton = (ImageButton) mHeader.findViewById(R.id.task_manager_button);
+        mTaskManagerButton = (ImageButton) mHeaderView.findViewById(R.id.task_manager_button);
         mTaskManagerButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -1195,7 +1200,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             }
         });
 
-        mHeader.setTaskManagerEnabled(mShowTaskManager);
+        mHeaderView.setTaskManagerEnabled(mShowTaskManager);
         mNotificationPanel.setTaskManagerEnabled(mShowTaskManager);
         mShowTaskList = false;
 
