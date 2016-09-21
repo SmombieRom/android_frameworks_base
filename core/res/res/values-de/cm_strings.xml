@@ -57,7 +57,7 @@
   <!-- Button to reboot the phone into download, within the Reboot Options dialog -->
   <string name="reboot_download">Download</string>
   <!-- Button to soft reboot the device, within the Reboot Options dialog -->
-  <string name="reboot_soft">Warmstart</string>
+  <string name="reboot_soft">Schnellstart</string>
   <!-- Title of dialog to confirm rebooting. -->
   <string name="reboot_title">Neu starten</string>
   <!-- Reboot Confirmation Dialog.  When the user chooses to reboot the device, there will
