@@ -43,6 +43,7 @@ public class KeyguardStateMonitor extends IKeyguardStateCallback.Stub {
     private volatile boolean mIsShowing = true;
     private volatile boolean mSimSecure = true;
     private volatile boolean mInputRestricted = true;
+    private volatile boolean mKeyguardPanelFocused = false;
 
     private int mCurrentUserId;
 
@@ -69,6 +70,10 @@ public class KeyguardStateMonitor extends IKeyguardStateCallback.Stub {
     public boolean isInputRestricted() {
         return mInputRestricted;
     }
+    
+    public boolean isKeyguardPanelFocused() {
+        return mKeyguardPanelFocused;
+    }
 
     @Override // Binder interface
     public void onShowingStateChanged(boolean showing) {
@@ -79,6 +84,11 @@ public class KeyguardStateMonitor extends IKeyguardStateCallback.Stub {
     public void onSimSecureStateChanged(boolean simSecure) {
         mSimSecure = simSecure;
     }
+    
+    @Override // Binder interface
+    public void onKeyguardPanelFocusChanged(boolean focused) {
+        mKeyguardPanelFocused = focused;
+    }     
 
     public synchronized void setCurrentUser(int userId) {
         mCurrentUserId = userId;
@@ -100,5 +110,6 @@ public class KeyguardStateMonitor extends IKeyguardStateCallback.Stub {
         pw.println(prefix + "mSimSecure=" + mSimSecure);
         pw.println(prefix + "mInputRestricted=" + mInputRestricted);
         pw.println(prefix + "mCurrentUserId=" + mCurrentUserId);
+        pw.println(prefix + "mKeyguardPanelFocused=" + mKeyguardPanelFocused);
     }
 }
